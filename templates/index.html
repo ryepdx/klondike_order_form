@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+        <script src="static/form.js"></script>
+{% endblock %}
+
+{% block content %}
+            <div id="terms_of_sale" class="container-fluid">
+                <h2>Terms of Sale</h2>
+                <p>
+                    By submitting the form below, you affirm that you have read, understood, and agreed to the following:
+                    <ol>
+                        <li>You will supply your own chips.</li>
+                        <li>You will tell your group buy organizer to send your pledged chips to Stumptown Miners.</li>
+                        <li>The price of the miners you have bought may drop due to more people from your group buy joining. Any price difference in USD between what you paid and the new price will be sent back to you as BTC.</li>
+                        <li>There is a batch size minimum of 128 from each group buy for each design. If you order a design and there are not enough orders of that design from your group buy, you may either receive a refund or (if you are part of an early group buy) opt to have your chips lumped in with a batch from a later-arriving group. You must make the election to either have your chips lumped in with a later order or receive a refund at the time of purchase.</li>
+                        <li>All received BTC will be converted to USD to hedge against market crashes. (This step is necessary as the assembly and fabrication plants do not yet take BTC.)</li>
+                        <li>Refunds will be calculated according to the USD value of your BTC at the time of currency conversion. An equivalent amount of BTC, calculated at the exchange value on CampBX, will be returned to you in the event of a refund. (E.g., if BTC doubles in value against USD after you have paid, and you then receive a full refund, you will only get half the BTC you originally paid.)</li>
+                        <li>Refunds on any of the miners (K1, K16, and K64) in your order may be requested until orders for that particular model of miner from your group buy (or from a later group buy, if you've opted to have your order bumped rather than refunded) reach 128. I will begin ordering parts for your group buy's orders at that point and will no longer be able to fully reimburse you.</li>
+                        <li>You will be contacted via email for your shipping information once production begins. I will also arrange at least one group meeting per group buy for those of you who live nearby and want to pick up your miners in person.</li>
+                    </ol>
+                </p>
+            </div>
+
+            <div id="contact_information" class="container-fluid">
+                <h2>Contact information</h2>
+                <p>
+                    If you have any questions or concerns, feel free to email me: ryepdx at gmail dot com. You can also PM me on bitcointalk.org. (My username is ryepdx there too.)
+                </p>
+            </div>
+
+            <div id="baseline_prices" class="container-fluid">
+                <h2>Baseline prices</h2>
+                
+                <div class="span10">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <!--<th>Batch size</th>-->
+                                <th>Klondike 1</th>
+                                <th>Klondike 16</th>
+                                <th>Klondike 64</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <!--<td><span>128</span></td>-->
+                                <td><span id="k1Price">{{ prices.K1 }}</span> BTC each</td>
+                                <td><span id="k16Price">{{ prices.K16 }}</span> BTC each</td>
+                                <td><span id="k64Price">{{ prices.K64 }}</span> BTC each</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <em>Prices listed are subject to reduction and partial refund based on participation from your group buy and BTC price at time of currency conversion, as noted in the Terms of Sale.</em>
+                </div>
+            </div>
+
+            <div id="order_form" class="container-fluid">
+                <h2>Order form</h2>
+                
+                <form action="/" method="post" class="container-fluid">
+
+                    {{ form.csrf_token }}
+
+                    <h3>Your information</h3>
+                    <div class="span10 form_section">
+                        <div id="information_form" class="information subform row">
+                        {% for field in form.information %}
+                            {% if field.type != "CSRFTokenField" %}
+                                <div class="span3">
+                                {{ field.label }} {{ field }}
+                                    {% if field.errors %}
+                                        <ul class="errors">
+                                        {% for error in field.errors %}
+                                            <li class="error">{{ error }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <h3>Your miners</h3>
+                    <div class="span10 form_section">
+                        <div id="miners_form" class="miners subform row">
+                        {% for field in form.miners %}
+                            {% if field.type != "FieldList" %}
+				{% if field.type != "BooleanField" %}
+	                                {% if field.type != "CSRFTokenField" %}
+        	                            <div class="span3">
+                	                    {{ field.label }} {{ field }}
+                        	            {% if field.errors %}
+                                	        <ul class="errors">
+	                                        {% for error in field.errors %}
+        	                                    <li class="error">{{ error }}</li>
+                	                        {% endfor %}
+	                                        </ul>
+        	                            {% endif %}
+                	                    </div>
+                        	        {% else %}
+                                	    {{ field }}
+	                                {% endif %}
+				{% else %}
+					<div class="span9">{{field}} {{field.label}}</div>
+				{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.errors.chip_supply_error %}
+                            <div class="form_error error">{{ form.errors.chip_supply_error }}</div>
+                        {% endif %}
+                        </div>
+                    </div>
+
+                    <h3>Your group buys</h3>
+                    <div class="span10 group_buys form_section" data-prefix="group_buys">
+                        {% for form_field in form.group_buys %}
+                            <div id="{{ form_field.name }}" class="subform group_buy row well" data-index="{{ loop.index0}}">
+                            {% for field in form_field %}
+                                {% if field.type != "CSRFTokenField" %}
+                                    <div class="span3">
+                                    {{ field.label }} {{ field }}
+                                    {% if field.errors %}
+                                        <ul class="errors">
+                                        {% for error in field.errors %}
+                                            <li class="error">{{ error }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    </div>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                            {% endfor %}
+                                <div class="span9">
+                                    <button type="button" class="remove btn"><i class="icon-minus"></i> Remove</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                        <button type="button" id="add_group_buy" class="btn">
+                            <i class="icon-plus"></i> Add another group buy 
+                        </button>
+                    </div>
+                    <div class="subtotal">
+                        Total: <span id="subtotal">0</span> BTC
+                    </div>
+                    <em>Total does not include shipping, which will be charged later based on your shipping preferences.</em>
+                    <input type="submit" value="Place Order!" class="btn-primary btn" />
+                </form>
+            </div>
+{% endblock %}

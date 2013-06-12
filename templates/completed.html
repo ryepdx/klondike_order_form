@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<script src="/static/qrcode.js"></script>
+<script src="/static/jquery.qrcode.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#qrcode').qrcode({
+        width: 250,
+        height: 250,
+        text: "{{ address }}"
+     });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+            <div id="payment_address" class="container-fluid text-center">
+                <a href="bitcoin:{{ address }}"><span id="qrcode"></span></a>
+                <p>
+                    Your order has been recorded, but will not be queued until you send <span class="price">{{ payment }} BTC</span> to <h3><a href="bitcoin:{{ address }}">{{ address }}</a></h3>
+                </p>
+                <p>
+                    This page is not yet programmed to update when your payment has been received, so please use your Bitcoin client or <a href="http://blockchain.info/address/{{ address }}">Blockchain.info</a> if you want to keep track of transaction confirmations.
+                </p>
+            </div>
+{% endblock %}

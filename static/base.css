@@ -1,0 +1,86 @@
+h1 {
+    font-family: sans-serif;
+    font-size: 48px;
+    font-weight: normal;
+}
+
+h2 {
+    margin: 1em 0px;
+}
+
+p, li {
+    margin: 1em;
+}
+
+.jumbotron {
+    text-align: center;
+    margin: 4em;
+}
+
+.container-narrow {
+    max-width: 700px;
+    margin: auto;
+}
+
+.form_section {
+    margin-bottom: 2em;
+}
+
+.errors {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.error {
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    border: thin solid red;
+    color: red;
+    background-color: #FDD;
+}
+
+.form_error {
+    display: table-cell;
+    margin-left: 20px;
+    float: left;
+}
+
+.group_buy .remove.btn {
+    margin-top: 1em;
+}
+
+.group_buy:first-child .remove.btn {
+    display: none;
+}
+
+.subtotal {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: table-cell;
+    padding-bottom: 1em;
+}
+
+.price {
+    font-weight: bold;
+}
+
+#order_form {
+    margin-bottom: 2em;
+}
+
+#order_form .span9 label {
+    display: inline;
+    position: relative;
+    top: 4px;
+}
+
+#order_form h2:first-child {
+    margin-bottom: 0.5em;
+}
+
+#order_form input[type=submit]:last-child {
+    margin-top: 1em;
+}
